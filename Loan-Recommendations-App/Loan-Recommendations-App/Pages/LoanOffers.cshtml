@@ -1,0 +1,54 @@
+﻿@page
+@model LoanOffers
+@using Loan_Recommendations_App.Data
+
+<div class="container">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">@Labels.LoanOffers</h4>
+        <p>@Labels.HereAreSomeOffersTailoredForYou</p>
+        <hr>
+        <p class="mb-0">@Labels.IfYouAreBelowTheAgeOfThirtyYouWillReceiveADiscount</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        @foreach(var item in Model.loanList)
+        {
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                    <div class="card-header py-3 text-white bg-primary border-primary">
+                        <h4 class="my-0 fw-normal">@item.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">@string.Format("{0} {1:#,0.00}", item.CurrencySymbol, Math.Round(item.Amount, 2))<small class="text-muted fw-light">/Amt</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li><h5>@Labels.InterestRate : @Math.Round(item.InterestRate, 2)%</h5></li>
+                            <li><h5>@Labels.Months : @item.MonthsToRepay</h5></li>
+                            <li><h5>@Labels.MonthlyPremium : @string.Format("{0} {1:#,0.00}", item.CurrencySymbol, Math.Round(item.Premium, 2))</h5></li>                         
+                        </ul>
+                        <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="LoanSelected()">@Labels.Interested</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="LoanSelectedToast" class="toast align-items-center text-white bg-primary border-0 hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @Labels.LoanSelectedSuccessfully              
+                </div>
+                <button onclick="ToastClosed()" type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function LoanSelected(){
+        $('#LoanSelectedToast').show();
+    }
+
+    function ToastClosed(){
+        $('#LoanSelectedToast').hide();
+    }
+ </script>

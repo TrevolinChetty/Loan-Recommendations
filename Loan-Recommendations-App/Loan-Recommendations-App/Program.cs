@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Loan_Recommendations_App.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options => { }).AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/CreateCustomer","");
+}); ;
+
+builder.Services.AddDbContext<ApplicationDBContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("LoanRecommendationsConnetionString"))
+    );
 
 var app = builder.Build();
 
